@@ -601,7 +601,7 @@ Node* solveNode(Node* node) {
 			break;
 		}
 		case 2: {
-			if ((tempLeft->arr[0] == tempRight->arr[0]) && (tempLeft->arr[1] == tempRight->arr[1])) { // 0 num
+			if ((tempLeft->arr[0] == 0) && (tempLeft->arr[0] == 3) && (tempLeft->arr[0] == tempRight->arr[0]) && (tempLeft->arr[0] == tempRight->arr[0])) { // 0 num
 				retNode->arr[0] = 0;
 				retNode->arr[1] = 0;
 				retNode->num = 0;
