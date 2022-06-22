@@ -29,6 +29,13 @@ struct Node {
 		left = right = nullptr;
 	}
 };
+/*Node* creteNode(int data0, int data1) {
+	Node* node = new Node();
+	node->arr[0] = data0;
+	node->arr[1] = data1;
+	node->left = node->right = nullptr;
+	return node;
+}*/
 
 string readNode(Node* node);
 Node* copy(Node* node);
@@ -83,6 +90,32 @@ int main() {
 			cout << "\n-------------------------\n\n\tEquation:\n\t" << nodeToText(&eqArr[noOfEq])<<"\n\n\tTree Form:\n";
 
 			printNode(&eqArr[noOfEq]);
+
+
+			/*
+			Node root(1, 1);
+
+			root.left					= new Node(1, 2);
+			root.right					= new Node(1, 3);
+										   
+			root.left->left				= new Node(1, 4);
+			root.left->right			= new Node(0, 5);
+			root.right->left			= new Node(0, 6);
+			root.right->right			= new Node(0, 7);
+										  
+			root.left->left->left		= new Node(0, 8);
+			root.left->left->right		= new Node(0, 9);
+			root.left->right->left		= new Node(2, 0);
+			root.left->right->right		= new Node(2, 1);
+			root.right->left->left		= new Node(2, 2);
+			root.right->left->right		= new Node(2, 3);
+			root.right->right->left		= new Node(2, 4);
+			root.right->right->right	= new Node(2, 5);
+
+			deleteBranches(&root);
+
+
+			printNode(&root);//*/
 
 			menuOption = 1;
 
@@ -169,19 +202,18 @@ int main() {
 				cout << "\tEq " << eqNo + 1 << ":\t\t" << eqStrArr[eqNo] << "\n";
 				printNode(&eqArr[eqNo]);
 				cout << "\n-----------------------\n\n";
-				cout << "\tEq " << eqNo + 1 << ":\t\t"<< eqStrArr[eqNo] <<"\n\n";
+				cout << "\tEq " << eqNo + 1 << ":\t\t" << eqStrArr[eqNo] << "\n\n";
 				cout << "\tDerivative:\t";
-				Node* tempPtr= diff(&eqArr[eqNo]);
+				Node* tempPtr = diff(&eqArr[eqNo]);
 				cout << nodeToText(tempPtr) << "\n\n";
 				//printNode(tempPtr);
-				
-				cout << "\tSimplified:\t";
+
 				Node* tempPtr2 = solveNode(tempPtr);
-				cout << nodeToText(tempPtr2) << "\n\n\tTree Form:\n\n";
+				cout << "\tSimplified:\t" << nodeToText(tempPtr2) << "\n\n\tTree Form:\n\n";
 				printNode(tempPtr2);
 
 
-				
+
 
 				cout << "\n\n\n";
 				system("pause>0");
@@ -228,7 +260,8 @@ int main() {
 string readNode(Node* node) {
 
 	if (node->arr[0] == 0) {
-		return to_string(node->num);
+		if(node->arr[1] == node->num) return to_string(node->arr[1]);
+		else return to_string(node->num);
 	}
 	
 	if (node->arr[0] == 1) {
@@ -388,6 +421,8 @@ string nodeToText(Node* node) {
 Node* textToNode(string arr) {
 	// 2sin(x)
 	// xyz
+	//cout << "\nMain: " << arr << "\n";
+
 	Node* root = new Node(0, 0);
 
 	int funcBool = 0, openBrackets = 0;
@@ -414,18 +449,19 @@ Node* textToNode(string arr) {
 				for (int cc = c + 1; cc < arr.length(); cc++) {
 					sub += arr[cc];
 				}
-				/
+				//cout << "\nsub1: " << sub << "\n";
 				root->right = textToNode(sub);
 				return root;
 			}
 			sub += arr[c];
 		}
+		//cout << "func" << i + 1  << ": " << funcBool << "\n";
 
 	}
 
 
 
-	//////////////// () ////////////////
+	//////////////// () //////////////// (2)((2)(3)+sin(tan(234))-(2)^(2))-3
 	sub = "";
 	if ((int)arr[0] == 40) {
 		openBrackets = 1;
@@ -471,10 +507,11 @@ Node* textToNode(string arr) {
 		}
 
 	}
+	//cout << "func+: " << funcBool << "\n";
 
 
 
-	//////////////// sin ////////////////
+	//////////////// sin //////////////// (sin(cos(34)))/(tan(cos(43)))
 	int unaryArr[3][3] = { {115,105,110}, {99,111,115}, {116,97,110} };
 	for (int i = 0; i < 3; i++) {
 
@@ -498,6 +535,7 @@ Node* textToNode(string arr) {
 			root->right = nullptr;
 			return root;
 		}
+		//cout << "func" << i + 1 << ": " << funcBool << "\n";
 	}
 
 
@@ -528,6 +566,7 @@ Node* textToNode(string arr) {
 
 Node* solveNode(Node* node) {
 	if (node == nullptr) return nullptr;
+	//cout << "\nCurrent Node: " << readNode(node) << "\n";
 	
 	Node* tempLeft = nullptr, * tempRight = nullptr;
 	if (node->left != nullptr) { tempLeft = solveNode(node->left); }
@@ -693,6 +732,10 @@ Node* solveNode(Node* node) {
 Node* diff(Node* node, string wrt) {
 	if (node == nullptr) return nullptr;
 
+	/*cout << "\nBefore:\n-----------------\n";
+	printNode(node);
+	cout << "\n-----------------\n";*/
+
 	Node* tempLeft = nullptr, * tempRight = nullptr;
 	if (node->left != nullptr) { tempLeft = diff(node->left); }
 	if (node->right != nullptr) { tempRight = diff(node->right); }
@@ -829,6 +872,10 @@ Node* diff(Node* node, string wrt) {
 	}
 	default: break;
 	}
+
+	/*cout << "\nAfter\n-----------------\n";
+	printNode(retNode);
+	cout << "\n-----------------\n";*/
 
 	return retNode;
 }
