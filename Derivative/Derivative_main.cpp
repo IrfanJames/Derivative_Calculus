@@ -206,7 +206,7 @@ int main() {
 				cout << "\tDerivative:\t";
 				Node* tempPtr = diff(&eqArr[eqNo]);
 				cout << nodeToText(tempPtr) << "\n\n";
-				//printNode(tempPtr);
+				//printNode(tempPtr); cout << "\n";
 
 				Node* tempPtr2 = solveNode(tempPtr);
 				cout << "\tSimplified:\t" << nodeToText(tempPtr2) << "\n\n\tTree Form:\n\n";
@@ -621,7 +621,14 @@ Node* solveNode(Node* node) {
 			break;
 		}
 		case 3: {
-			if ((tempLeft->arr[0] == 0 && tempLeft->num == 0)) { // 0 num
+			if ((tempRight->arr[0] == 0 && (tempRight->num == 0 || tempRight->arr[1] == 0))) {
+				cout << "\nError: Div/0\n";
+				retNode->arr[0] = 0;
+				retNode->num = 9999999999;
+				retNode->arr[1] = node->num;
+				return retNode;
+			}
+			else if ((tempLeft->arr[0] == 0 && (tempLeft->num == 0 || tempLeft->arr[1] == 0))) { // 0 num
 				retNode->arr[0] = 0;
 				retNode->arr[1] = 0;
 				retNode->num = 0;
@@ -631,9 +638,6 @@ Node* solveNode(Node* node) {
 				retNode->arr[0] = 0;
 				if (tempRight->num != 0) {
 					retNode->num = tempLeft->num / tempRight->num;
-				}
-				else {
-					cout << "\nError: Div/0\n"; retNode->num = 9999999999;
 				}
 				retNode->arr[1] = node->num;
 				return retNode;
@@ -677,7 +681,7 @@ Node* solveNode(Node* node) {
 			}
 			else if (tempLeft->arr[0] == 0 && tempRight->arr[0] == 0) {
 				retNode->arr[0] = 0;
-				retNode->arr[1] = pow(tempLeft->arr[1], tempRight->arr[1]);
+				retNode->num = pow(tempLeft->arr[1], tempRight->arr[1]);
 				retNode->arr[1] = retNode->num;
 				return retNode;
 			}
