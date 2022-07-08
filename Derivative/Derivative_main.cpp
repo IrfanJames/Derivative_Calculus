@@ -668,15 +668,15 @@ Node* solveNode(Node* node) {
 			break;
 		}
 		case 5: {
-			if (tempRight->arr[0] == 0 && tempRight->arr[1] == 0) {
+			if (tempRight->arr[0] == 0 && tempRight->num == 0) {
 				retNode->arr[0] = 0;
 				retNode->arr[1] = 1;
 				retNode->num = 1;
 				return retNode;
 			}
-			else if (tempRight->arr[0] == 0 && tempRight->arr[1] == 1) {
+			else if (tempRight->arr[0] == 0 && tempRight->num == 1) {
 				deleteTree(retNode);
-				retNode = copy(solveNode(node->right));
+				retNode = copy(solveNode(node->left));
 				return retNode;
 			}
 			else if (tempLeft->arr[0] == 0 && tempRight->arr[0] == 0) {
