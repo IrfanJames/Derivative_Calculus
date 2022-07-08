@@ -12,9 +12,9 @@ D:\Programming\C++\Derivative_Calculus\Derivative\Derivative_main.cpp(555,72): w
 D:\Programming\C++\Derivative_Calculus\Derivative\Derivative_main.cpp(558,63): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 D:\Programming\C++\Derivative_Calculus\Derivative\Derivative_main.cpp(598,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 D:\Programming\C++\Derivative_Calculus\Derivative\Derivative_main.cpp(618,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Programming\C++\Derivative_Calculus\Derivative\Derivative_main.cpp(627,30): warning C4305: '=': truncation from '__int64' to 'float'
-D:\Programming\C++\Derivative_Calculus\Derivative\Derivative_main.cpp(628,27): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\Programming\C++\Derivative_Calculus\Derivative\Derivative_main.cpp(642,27): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Programming\C++\Derivative_Calculus\Derivative\Derivative_main.cpp(641,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+D:\Programming\C++\Derivative_Calculus\Derivative\Derivative_main.cpp(650,30): warning C4305: '=': truncation from '__int64' to 'float'
+D:\Programming\C++\Derivative_Calculus\Derivative\Derivative_main.cpp(651,27): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 D:\Programming\C++\Derivative_Calculus\Derivative\Derivative_main.cpp(665,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 D:\Programming\C++\Derivative_Calculus\Derivative\Derivative_main.cpp(684,23): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 D:\Programming\C++\Derivative_Calculus\Derivative\Derivative_main.cpp(685,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data

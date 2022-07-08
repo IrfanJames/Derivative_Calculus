@@ -268,8 +268,8 @@ string readNode(Node* node) {
 		switch (node->arr[1]) {
 		case 1: return "+";
 		case 2: return "-";
-		case 3: return "/";
-		case 4: return "*";
+		case 3: return "*";
+		case 4: return "/";
 		case 5: return "^";
 		case 6: return "log";
 		default:break;
@@ -366,7 +366,7 @@ string nodeToText(Node* node) {
 		break;
 	}
 	case 1: {
-		// 1. +[1], -[2], /[3], *[4], ^[5], log[6]
+		// 1. +[1], -[2], *[3], /[4], ^[5], log[6]
 		switch (node->arr[1]) {
 		case 1: {
 			return "(" + tempLeft + "+" + tempRight + ")";
@@ -377,11 +377,11 @@ string nodeToText(Node* node) {
 			break;
 		}
 		case 3: {
-			return "(" + tempLeft + "/" + tempRight + ")";
+			return "(" + tempLeft + "*" + tempRight + ")";
 			break;
 		}
 		case 4: {
-			return "(" + tempLeft + "*" + tempRight + ")";
+			return "(" + tempLeft + "/" + tempRight + ")";
 			break;
 		}
 		case 5: {
@@ -429,7 +429,7 @@ Node* textToNode(string arr) {
 	string sub;
 
 	//////////////// + /////////////////
-	int binArr[5] = { 43,45,47,42,94 }; // + - / * ^
+	int binArr[5] = { 43,45,42,47,94 }; // + - * / ^
 	for (int i = 0; i < 5; i++) {
 
 		sub = "";
@@ -566,20 +566,20 @@ Node* textToNode(string arr) {
 
 Node* solveNode(Node* node) {
 	if (node == nullptr) return nullptr;
-	//cout << "\nCurrent Node: " << readNode(node) << "\n";
-	
+	//cout << "\n" << readNode(node) << "\n";
+
 	Node* tempLeft = nullptr, * tempRight = nullptr;
 	if (node->left != nullptr) { tempLeft = solveNode(node->left); }
 	if (node->right != nullptr) { tempRight = solveNode(node->right); }
 
-	Node *retNode = new Node(node->arr[0], node->arr[1]);
+	Node* retNode = new Node(node->arr[0], node->arr[1]);
 
 	switch (retNode->arr[0]) {
 	case 0: {
 		break;
 	}
 	case 1: {
-		// 1. +[1], -[2], /[3], *[4], ^[5], log[6]
+		// 1. +[1], -[2], *[3], /[4], ^[5], log[6]
 		switch (node->arr[1]) {
 		case 1: {
 			if ((tempLeft->arr[0] == 0 && tempLeft->num == 0)) { // - 0
@@ -601,15 +601,15 @@ Node* solveNode(Node* node) {
 			break;
 		}
 		case 2: {
-			if ((tempLeft->arr[0] == 0) && (tempLeft->arr[0] == 3) && (tempLeft->arr[0] == tempRight->arr[0]) && (tempLeft->arr[0] == tempRight->arr[0])) { // 0 num
+			if ((tempRight->arr[0] == 0 && tempRight->num == 0)) { // num 0
+				deleteTree(retNode);
+				retNode = copy(solveNode(node->left));
+				return retNode;
+			}
+			else if ((tempLeft->arr[0] == 0) && (tempRight->arr[0] == 0) && ((tempLeft->num == tempRight->num) || (tempLeft->arr[1] == tempRight->arr[1]))) { // 0 num
 				retNode->arr[0] = 0;
 				retNode->arr[1] = 0;
 				retNode->num = 0;
-				return retNode;
-			}
-			else if ((tempRight->arr[0] == 0 && tempRight->num == 0)) { // num 0
-				deleteTree(retNode);
-				retNode = copy(solveNode(node->left));
 				return retNode;
 			}
 			else if (tempLeft->arr[0] == 0 && tempRight->arr[0] == 0) { // num num
@@ -621,6 +621,29 @@ Node* solveNode(Node* node) {
 			break;
 		}
 		case 3: {
+			if ((tempLeft->arr[0] == 0 && tempLeft->num == 0) || (tempRight->arr[0] == 0 && tempRight->num == 0)) { //0 || 0
+				retNode->arr[0] = 0; retNode->arr[1] = 0; retNode->num = 0;
+				return retNode;
+			}
+			else if ((tempLeft->arr[0] == 0 && tempLeft->num == 1)) { // 1 ||
+				deleteTree(retNode);
+				retNode = copy(solveNode(node->right));
+				return retNode;
+			}
+			else if ((tempRight->arr[0] == 0 && tempRight->num == 1)) { // || 1
+				deleteTree(retNode);
+				retNode = copy(solveNode(node->left));
+				return retNode;
+			}
+			else if (tempLeft->arr[0] == 0 && tempRight->arr[0] == 0) { // num
+				retNode->arr[0] = 0;
+				retNode->num = tempLeft->num * tempRight->num;
+				retNode->arr[1] = retNode->num;
+				return retNode;
+			}
+			break;
+		}
+		case 4: {
 			if ((tempRight->arr[0] == 0 && (tempRight->num == 0 || tempRight->arr[1] == 0))) {
 				cout << "\nError: Div/0\n";
 				retNode->arr[0] = 0;
@@ -639,29 +662,6 @@ Node* solveNode(Node* node) {
 				if (tempRight->num != 0) {
 					retNode->num = tempLeft->num / tempRight->num;
 				}
-				retNode->arr[1] = node->num;
-				return retNode;
-			}
-			break;
-		}
-		case 4: {
-			if ((tempLeft->arr[0] == 0 && tempLeft->arr[1] == 0) || (tempRight->arr[0] == 0 && tempRight->arr[1] == 0)) { //0 || 0
-				retNode->arr[0] = 0; retNode->arr[1] = 0; retNode->num = 0;
-				return retNode;
-			}
-			else if ((tempLeft->arr[0] == 0 && tempLeft->num == 1)) { // 1 ||
-				deleteTree(retNode);
-				retNode = copy(solveNode(node->right));
-				return retNode;
-			}
-			else if ((tempRight->arr[0] == 0 && tempRight->num == 1)) { // || 1
-				deleteTree(retNode);
-				retNode = copy(solveNode(node->left));
-				return retNode;
-			}
-			else if (tempLeft->arr[0] == 0 && tempRight->arr[0] == 0) { // num
-				retNode->arr[0] = 0;
-				retNode->num = tempLeft->num * tempRight->num;
 				retNode->arr[1] = retNode->num;
 				return retNode;
 			}
@@ -717,7 +717,7 @@ Node* solveNode(Node* node) {
 			}
 			default: break;
 			}
-			
+
 			retNode->arr[1] = retNode->num;
 			return retNode;
 		}
@@ -753,7 +753,7 @@ Node* diff(Node* node, string wrt) {
 		break;
 	}
 	case 1: {
-		// 1. +[1], -[2], /[3], *[4], ^[5], log[6]
+		// 1. +[1], -[2], *[3], /[4], ^[5], log[6]
 		switch (retNode->arr[1]) {
 		case 1: {
 			retNode->left = tempLeft;
@@ -766,15 +766,28 @@ Node* diff(Node* node, string wrt) {
 			break;
 		}
 		case 3: {
-			retNode->arr[0] = 1; retNode->arr[1] = 3; // /
+			retNode->arr[1] = 1;
+
+			retNode->left  = new Node(1, 3);
+			retNode->right = new Node(1, 3);
+
+			retNode->left->right	= copy(node->left);
+			retNode->left->left		= tempRight;
+			retNode->right->right	= copy(node->right);
+			retNode->right->left	= tempLeft;
+
+			break;
+		}
+		case 4: {
+			retNode->arr[0] = 1; retNode->arr[1] = 4; // /
 
 			retNode->left = new Node(1, 2); // -
 
-			retNode->left->left = new Node(1, 4); // mul
+			retNode->left->left = new Node(1, 3); // mul
 			retNode->left->left->left = copy(node->right);
 			retNode->left->left->right = tempLeft;
 
-			retNode->left->right = new Node(1, 4); // mul
+			retNode->left->right = new Node(1, 3); // mul
 			retNode->left->right->left = copy(node->left);
 			retNode->left->right->right = tempRight;
 
@@ -786,34 +799,21 @@ Node* diff(Node* node, string wrt) {
 
 			break;
 		}
-		case 4: {
-			retNode->arr[1] = 1;
-
-			retNode->left = new Node(1, 4);
-			retNode->right = new Node(1, 4);
-
-			retNode->left->left		= new Node(*node->left);
-			retNode->left->right	= tempRight;
-			retNode->right->left	= new Node(*node->right);
-			retNode->right->right	= tempLeft;
-
-			break;
-		}
 		case 5: {
 
-			retNode->arr[1] = 4;
+			retNode->arr[1] = 3;
 
 			retNode->left = new Node(1, 5);
 
-			retNode->left->left = new Node(*node->left);
+			retNode->left->left = copy(node->left);
 			retNode->left->right = new Node(1, 2);
 
-			retNode->left->right->left = new Node(*node->right);
+			retNode->left->right->left = copy(node->right);
 			retNode->left->right->right = new Node(0, 1);
 
-			retNode->right = new Node(1, 4);
+			retNode->right = new Node(1, 3);
 			retNode->right->left = tempLeft;
-			retNode->right->right = new Node(*node->right); // Can't use (node->right) two times
+			retNode->right->right = copy(node->right); // Can't use (node->right) two times
 
 			break;
 		}
@@ -824,7 +824,7 @@ Node* diff(Node* node, string wrt) {
 	case 2: {
 		switch (retNode->arr[1]) {
 		case 1: {
-			retNode->arr[0] = 1; retNode->arr[1] = 4; // *
+			retNode->arr[0] = 1; retNode->arr[1] = 3; // *
 
 			retNode->right = tempLeft; // \/\/\/\/'
 
@@ -836,7 +836,7 @@ Node* diff(Node* node, string wrt) {
 			retNode->arr[0] = 1; retNode->arr[1] = 2; // -
 			retNode->left = new Node(0, 0);
 
-			retNode->right = new Node(1, 4); // mul
+			retNode->right = new Node(1, 3); // mul
 
 			retNode->right->right = tempLeft; // \/\/\/\/'
 
@@ -848,14 +848,14 @@ Node* diff(Node* node, string wrt) {
 			break;
 		}
 		case 3: {
-			retNode->arr[0] = 1; retNode->arr[1] = 3;// /
+			retNode->arr[0] = 1; retNode->arr[1] = 4;// /
 			
 			retNode->left = tempLeft;
 
 			retNode->right = new Node(1, 5);// ^
 			retNode->right->right = new Node(0, 2);// 2
 			retNode->right->left = new Node(2, 2);// cos
-			retNode->right->left->left = copy(node->left);
+			retNode->right->left->left = new Node(*node->left);
 
 			break;
 		}
