@@ -478,13 +478,13 @@ Node* textToNode(string arr) {
 					switch (arr[c + 1]) {
 					case '+': root->arr[0] = 1; root->arr[1] = 1; break;
 					case '-': root->arr[0] = 1; root->arr[1] = 2; break;
-					case '/': root->arr[0] = 1; root->arr[1] = 3; break;
-					case '*': root->arr[0] = 1; root->arr[1] = 4; break;
-					case '(': root->arr[0] = 1; root->arr[1] = 4; break; // ()()
+					case '*': root->arr[0] = 1; root->arr[1] = 3; break;
+					case '(': root->arr[0] = 1; root->arr[1] = 3; break; // ()()
+					case '/': root->arr[0] = 1; root->arr[1] = 4; break;
 					case '^': root->arr[0] = 1; root->arr[1] = 5; break;
 					default: break;
 					}
-					if (root->arr[0] != 1) { root->arr[0] = 1; root->arr[1] = 4; }
+					if (root->arr[0] != 1) { root->arr[0] = 1; root->arr[1] = 3; }
 
 					sub = "";
 					for (int cc = c + 1; cc < arr.length(); cc++) {
