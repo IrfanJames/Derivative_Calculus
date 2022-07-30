@@ -17,7 +17,7 @@ using std::cout; using std::cin; using std::string; using std::to_string; using 
 
 struct Node {
 	int arr[2] = { 0,0 };
-	float num = 0;
+	double num = 0;
 	Node* left = nullptr;
 	Node* right = nullptr;
 
@@ -429,9 +429,9 @@ Node* textToNode(string arr) {
 	string sub;
 
 	//////////////// + /////////////////
-	int binArr[5] = { 43,45,42,47,94 }; // + - * / ^
+	int binArr[5] = { 43, 45, 42, 47, 94}; // + - * / ^
 	for (int i = 0; i < 5; i++) {
-
+		
 		sub = "";
 		openBrackets = 0;
 		for (int c = 0; c < arr.length(); c++) {
@@ -582,12 +582,12 @@ Node* solveNode(Node* node) {
 		// 1. +[1], -[2], *[3], /[4], ^[5], log[6]
 		switch (node->arr[1]) {
 		case 1: {
-			if ((tempLeft->arr[0] == 0 && tempLeft->num == 0)) { // - 0
+			if ((tempLeft->arr[0] == 0 && tempLeft->num == 0)) { // + 0
 				deleteTree(retNode);
 				retNode = copy(solveNode(node->right));
 				return retNode;
 			}
-			else if ((tempRight->arr[0] == 0 && tempRight->num == 0)) { // 0 -
+			else if ((tempRight->arr[0] == 0 && tempRight->num == 0)) { // 0 +
 				deleteTree(retNode);
 				retNode = copy(solveNode(node->left));
 				return retNode;
